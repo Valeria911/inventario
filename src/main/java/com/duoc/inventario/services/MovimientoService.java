@@ -3,6 +3,7 @@ package com.duoc.inventario.services;
 import com.duoc.inventario.entities.Movimiento;
 import com.duoc.inventario.repositories.MovimientoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,8 +21,8 @@ public class MovimientoService {
     }
 
     //ver un movimiento por id
-    public Optional<Movimiento> getMovimientoById(Long id) {
-        return movimientoRepository.findById(id).orElse(null);
+    public Optional<Movimiento> getMovimientoById(Long idMovimiento) {
+        return movimientoRepository.findById(idMovimiento);
     }
 
     //crear un movimiento
@@ -30,25 +31,23 @@ public class MovimientoService {
     }
 
     //editar un movimiento
-    public Movimiento updateMovimiento(Long id, Movimiento movimientoDetails) {
-        Movimiento movimiento = movimientoRepository.findById(id).orElse(null);
-        if (movimiento != null) {
-            movimiento.setTipo(movimientoDetails.getTipo());
-            movimiento.setCantidad(movimientoDetails.getCantidad());
-            movimiento.setFechaMovimiento(movimientoDetails.getFechaMovimiento());
+    public Movimiento updateMovimiento(Long idMovimiento, Movimiento movimientoDetails) {
+        return movimientoRepository.findById(idMovimiento).map(movimiento -> {
             movimiento.setIdProducto(movimientoDetails.getIdProducto());
-            return movimientoRepository.save(movimiento);
-        }
-        return null;
+            movimiento.setFechaMovimiento(movimientoDetails.getFechaMovimiento());
+            movimiento.setCantidad(movimientoDetails.getCantidad());
+            movimiento.setTipo(movimientoDetails.getTipo());
+            movimiento.setIdUsuario(movimientoDetails.getIdUsuario());
+            return ResponseEntity.ok(movimientoRepository.save(movimiento));
+        }).orElse(ResponseEntity.notFound().build()).getBody();
     }
 
     //eliminar un movimiento
-    public boolean deleteMovimiento(Long id) {
-        Movimiento movimiento = movimientoRepository.findById(id).orElse(null);
-        if (movimiento != null) {
-            movimientoRepository.delete(movimiento);
-            return true;
+    public ResponseEntity<Void> deleteMovimiento(Long idMovimiento) {
+        if (movimientoRepository.existsById(idMovimiento)) {
+            movimientoRepository.deleteById(idMovimiento);
+            return ResponseEntity.noContent().build();
         }
-        return false;
+        return ResponseEntity.notFound().build();
     }
 }

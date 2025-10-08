@@ -3,6 +3,7 @@ package com.duoc.inventario.services;
 import com.duoc.inventario.entities.Proveedor;
 import com.duoc.inventario.repositories.ProveedorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class ProveedorService {
 
     //ver un proveedor por id
     public Optional<Proveedor> getProveedorById(Long id) {
-        return proveedorRepository.findById(id).orElse(null);
+        return proveedorRepository.findById(id);
     }
 
     //crear un proveedor
@@ -31,23 +32,21 @@ public class ProveedorService {
 
     //editar un proveedor
     public Proveedor updateProveedor(Long id, Proveedor proveedorDetails) {
-        Proveedor proveedor = proveedorRepository.findById(id).orElse(null);
-        if (proveedor != null) {
+        return proveedorRepository.findById(id).map(proveedor -> {
             proveedor.setNombre(proveedorDetails.getNombre());
             proveedor.setDireccion(proveedorDetails.getDireccion());
             proveedor.setTelefono(proveedorDetails.getTelefono());
-            return proveedorRepository.save(proveedor);
-        }
-        return null;
+            return ResponseEntity.ok(proveedorRepository.save(proveedor));
+        }).orElse(ResponseEntity.notFound().build()).getBody();
     }
 
+
     //eliminar un proveedor
-    public boolean deleteProveedor(Long id) {
-        Proveedor proveedor = proveedorRepository.findById(id).orElse(null);
-        if (proveedor != null) {
-            proveedorRepository.delete(proveedor);
-            return true;
+    public ResponseEntity<Void> deleteProveedor(Long idProveedor){
+        if (proveedorRepository.existsById(idProveedor)){
+            proveedorRepository.deleteById(idProveedor);
+            return ResponseEntity.noContent().build();
         }
-        return false;
+        return ResponseEntity.notFound().build();
     }
 }

@@ -3,6 +3,7 @@ package com.duoc.inventario.services;
 import com.duoc.inventario.entities.Producto;
 import com.duoc.inventario.repositories.ProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class ProductoService {
 
     //ver un producto por id
     public Optional<Producto> getProductoById(Long id) {
-        return productoRepository.findById(id).orElse(null);
+        return productoRepository.findById(id);
     }
 
     //crear un producto
@@ -31,25 +32,22 @@ public class ProductoService {
 
     //editar un producto
     public Producto updateProducto(Long id, Producto productoDetails) {
-        Producto producto = productoRepository.findById(id).orElse(null);
-        if (producto != null) {
-            producto.setNombre(productoDetails.getNombre());
-            producto.setDescripcion(productoDetails.getDescripcion());
-            producto.setPrecioUnitario(productoDetails.getPrecioUnitario());
-            producto.setStockDisponible(productoDetails.getStockDisponible());
-            return productoRepository.save(producto);
-        }
-        return null;
+        return productoRepository.findById(id).map(producto1 -> {
+            producto1.setNombre(productoDetails.getNombre());
+            producto1.setDescripcion(productoDetails.getDescripcion());
+            producto1.setPrecioUnitario(productoDetails.getPrecioUnitario());
+            producto1.setStockDisponible(productoDetails.getStockDisponible());
+            return ResponseEntity.ok(productoRepository.save(producto1));
+        }).orElse(ResponseEntity.notFound().build()).getBody();
     }
 
     //eliminar un producto
-    public boolean deleteProducto(Long id) {
-        Producto producto = productoRepository.findById(id).orElse(null);
-        if (producto != null) {
-            productoRepository.delete(producto);
-            return true;
+    public ResponseEntity<Void> deleteProducto(Long id){
+        if (productoRepository.existsById(id)){
+            productoRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
         }
-        return false;
+        return ResponseEntity.notFound().build();
     }
 
 

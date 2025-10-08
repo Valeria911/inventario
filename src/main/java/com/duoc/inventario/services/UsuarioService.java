@@ -3,6 +3,7 @@ package com.duoc.inventario.services;
 import com.duoc.inventario.entities.Usuario;
 import com.duoc.inventario.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class UsuarioService {
 
     //ver un usuario por id
     public Optional<Usuario> getUsuarioById(Long idUsuario) {
-        return usuarioRepository.findById(idUsuario).orElse(null);
+        return usuarioRepository.findById(idUsuario);
     }
 
     //crear un usuario
@@ -31,28 +32,22 @@ public class UsuarioService {
 
     //editar un usuario
     public Usuario updateUsuario(Long idUsuario, Usuario usuarioDetails) {
-        Usuario usuario = usuarioRepository.findById(idUsuario).orElse(null);
-        if (usuario != null) {
-            usuario.setNombre(usuarioDetails.getNombre());
+        return usuarioRepository.findById(idUsuario).map(usuario -> {
             usuario.setNombre(usuarioDetails.getNombre());
             usuario.setApellido(usuarioDetails.getApellido());
             usuario.setRol(usuarioDetails.getRol());
             usuario.setEstado(usuarioDetails.getEstado());
-            return usuarioRepository.save(usuario);
-        } else {
-            return null;
-        }
+            return ResponseEntity.ok(usuarioRepository.save(usuario));
+        }).orElse(ResponseEntity.notFound().build()).getBody();
     }
 
     //eliminar un usuario
-    public boolean deleteUsuario(Long idUsuario) {
-        Usuario usuario = usuarioRepository.findById(idUsuario).orElse(null);
-        if (usuario != null) {
-            usuarioRepository.delete(usuario);
-            return true;
-        } else {
-            return false;
+    public ResponseEntity<Void> deleteUsuario(Long idUsuario) {
+        if (usuarioRepository.existsById(idUsuario)) {
+            usuarioRepository.deleteById(idUsuario);
+            return ResponseEntity.noContent().build();
         }
+        return ResponseEntity.notFound().build();
     }
 
 }
