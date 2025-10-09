@@ -14,18 +14,18 @@ public class Movimiento extends RepresentationModel<Movimiento> {
     private Long idMovimiento;
 
     @Column
-    private Producto idProducto;
+    private Long idProducto;
     private String tipo; // "ingreso" o "egreso"
     private Integer cantidad;
 
     @Column(name = "fecha_movimiento")
-    private LocalDate fechaMovimiento;
-    private Usuario idUsuario;
+    private String fechaMovimiento;
+    private Long idUsuario;
 
     public Movimiento() {
     }
 
-    public Movimiento(Producto idProducto, String tipo, Integer cantidad, LocalDate fechaMovimiento, Usuario idUsuario) {
+    public Movimiento(Long idProducto, String tipo, Integer cantidad, String fechaMovimiento, Long idUsuario) {
         this.idProducto = idProducto;
         this.tipo = tipo;
         this.cantidad = cantidad;
@@ -41,11 +41,11 @@ public class Movimiento extends RepresentationModel<Movimiento> {
         this.idMovimiento = idMovimiento;
     }
 
-    public Producto getIdProducto() {
+    public Long getIdProducto() {
         return idProducto;
     }
 
-    public void setIdProducto(Producto idProducto) {
+    public void setIdProducto(Long idProducto) {
         this.idProducto = idProducto;
     }
 
@@ -65,19 +65,19 @@ public class Movimiento extends RepresentationModel<Movimiento> {
         this.cantidad = cantidad;
     }
 
-    public LocalDate getFechaMovimiento() {
+    public String getFechaMovimiento() {
         return fechaMovimiento;
     }
 
-    public void setFechaMovimiento(LocalDate fechaMovimiento) {
+    public void setFechaMovimiento(String fechaMovimiento) {
         this.fechaMovimiento = fechaMovimiento;
     }
 
-    public Usuario getIdUsuario() {
+    public Long getIdUsuario() {
         return idUsuario;
     }
 
-    public void setIdUsuario(Usuario idUsuario) {
+    public void setIdUsuario(Long idUsuario) {
         this.idUsuario = idUsuario;
     }
 }

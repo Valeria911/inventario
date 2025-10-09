@@ -3,9 +3,11 @@ package com.duoc.inventario.entities;
 import jakarta.persistence.*;
 import org.springframework.hateoas.RepresentationModel;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name= "usuario")
-public class Usuario extends RepresentationModel<Usuario> {
+public class Usuario extends RepresentationModel<Usuario> implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,6 +15,8 @@ public class Usuario extends RepresentationModel<Usuario> {
 
     @Column
     private String nombre;
+
+    @Column
     private String apellido;
     private String rol; // admin, user
     private Boolean estado; // activo, inactivo

@@ -14,17 +14,17 @@ public class Inventario extends RepresentationModel<Inventario> {
     private Long idInventario;
 
     @Column
-    private Producto idProducto;
+    private Long idProducto;
     private Integer cantidad;
     private String ubicacion; // bodega o estantería
 
     @Column(name = "fecha_actualizacion")
-    private LocalDate fechaActualizacion;
+    private String fechaActualizacion;
 
     public Inventario() {
     }
 
-    public Inventario(Producto idProducto, Integer cantidad, String ubicacion, LocalDate fechaActualizacion) {
+    public Inventario(Long idProducto, Integer cantidad, String ubicacion, String fechaActualizacion) {
         this.idProducto = idProducto;
         this.cantidad = cantidad;
         this.ubicacion = ubicacion;
@@ -39,11 +39,11 @@ public class Inventario extends RepresentationModel<Inventario> {
         this.idInventario = idInventario;
     }
 
-    public Producto getIdProducto() {
+    public Long getIdProducto() {
         return idProducto;
     }
 
-    public void setIdProducto(Producto idProducto) {
+    public void setIdProducto(Long idProducto) {
         this.idProducto = idProducto;
     }
 
@@ -63,11 +63,11 @@ public class Inventario extends RepresentationModel<Inventario> {
         this.ubicacion = ubicacion;
     }
 
-    public LocalDate getFechaActualizacion() {
+    public String getFechaActualizacion() {
         return fechaActualizacion;
     }
 
-    public void setFechaActualizacion(LocalDate fechaActualizacion) {
+    public void setFechaActualizacion(String fechaActualizacion) {
         this.fechaActualizacion = fechaActualizacion;
     }
 }

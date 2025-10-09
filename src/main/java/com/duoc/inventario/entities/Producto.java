@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import org.springframework.hateoas.RepresentationModel;
 
 @Entity
-@Table(name= "producto")
+@Table(name= "producto_inventario")
 public class Producto extends RepresentationModel<Producto> {
 
     @Id
@@ -21,12 +21,12 @@ public class Producto extends RepresentationModel<Producto> {
 
     @Column(name = "precio_unitario")
     private Double precioUnitario;
-    private Proveedor idProveedor;
+    private Long idProveedor;
 
     public Producto() {
     }
 
-    public Producto(Long idProducto, String nombre, String categoria, String descripcion, Integer stockDisponible, Double precioUnitario, Proveedor idProveedor) {
+    public Producto(Long idProducto, String nombre, String categoria, String descripcion, Integer stockDisponible, Double precioUnitario, Long idProveedor) {
         this.idProducto = idProducto;
         this.nombre = nombre;
         this.categoria = categoria;
@@ -84,11 +84,11 @@ public class Producto extends RepresentationModel<Producto> {
         this.precioUnitario = precioUnitario;
     }
 
-    public Proveedor getIdProveedor() {
+    public Long getIdProveedor() {
         return idProveedor;
     }
 
-    public void setIdProveedor(Proveedor idProveedor) {
+    public void setIdProveedor(Long idProveedor) {
         this.idProveedor = idProveedor;
     }
 
