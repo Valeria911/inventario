@@ -37,6 +37,7 @@ public class ProductoService {
             producto1.setDescripcion(productoDetails.getDescripcion());
             producto1.setPrecioUnitario(productoDetails.getPrecioUnitario());
             producto1.setStockDisponible(productoDetails.getStockDisponible());
+            producto1.setIdProveedor(productoDetails.getIdProveedor());
             return ResponseEntity.ok(productoRepository.save(producto1));
         }).orElse(ResponseEntity.notFound().build()).getBody();
     }

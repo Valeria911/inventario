@@ -21,8 +21,8 @@ public class MovimientoService {
     }
 
     //ver un movimiento por id
-    public Optional<Movimiento> getMovimientoById(Long idMovimiento) {
-        return movimientoRepository.findById(idMovimiento);
+    public Optional<Movimiento> getMovimientoById(Long id) {
+        return movimientoRepository.findById(id);
     }
 
     //crear un movimiento
@@ -31,8 +31,8 @@ public class MovimientoService {
     }
 
     //editar un movimiento
-    public Movimiento updateMovimiento(Long idMovimiento, Movimiento movimientoDetails) {
-        return movimientoRepository.findById(idMovimiento).map(movimiento -> {
+    public Movimiento updateMovimiento(Long id, Movimiento movimientoDetails) {
+        return movimientoRepository.findById(id).map(movimiento -> {
             movimiento.setIdProducto(movimientoDetails.getIdProducto());
             movimiento.setFechaMovimiento(movimientoDetails.getFechaMovimiento());
             movimiento.setCantidad(movimientoDetails.getCantidad());
@@ -43,9 +43,9 @@ public class MovimientoService {
     }
 
     //eliminar un movimiento
-    public ResponseEntity<Void> deleteMovimiento(Long idMovimiento) {
-        if (movimientoRepository.existsById(idMovimiento)) {
-            movimientoRepository.deleteById(idMovimiento);
+    public ResponseEntity<Void> deleteMovimiento(Long id) {
+        if (movimientoRepository.existsById(id)) {
+            movimientoRepository.deleteById(id);
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();

@@ -21,8 +21,8 @@ public class UsuarioService {
     }
 
     //ver un usuario por id
-    public Optional<Usuario> getUsuarioById(Long idUsuario) {
-        return usuarioRepository.findById(idUsuario);
+    public Optional<Usuario> getUsuarioById(Long id) {
+        return usuarioRepository.findById(id);
     }
 
     //crear un usuario
@@ -31,8 +31,8 @@ public class UsuarioService {
     }
 
     //editar un usuario
-    public Usuario updateUsuario(Long idUsuario, Usuario usuarioDetails) {
-        return usuarioRepository.findById(idUsuario).map(usuario -> {
+    public Usuario updateUsuario(Long id, Usuario usuarioDetails) {
+        return usuarioRepository.findById(id).map(usuario -> {
             usuario.setNombre(usuarioDetails.getNombre());
             usuario.setApellido(usuarioDetails.getApellido());
             usuario.setRol(usuarioDetails.getRol());
@@ -42,9 +42,9 @@ public class UsuarioService {
     }
 
     //eliminar un usuario
-    public ResponseEntity<Void> deleteUsuario(Long idUsuario) {
-        if (usuarioRepository.existsById(idUsuario)) {
-            usuarioRepository.deleteById(idUsuario);
+    public ResponseEntity<Void> deleteUsuario(Long id) {
+        if (usuarioRepository.existsById(id)) {
+            usuarioRepository.deleteById(id);
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();

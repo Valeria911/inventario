@@ -42,9 +42,9 @@ public class ProveedorService {
 
 
     //eliminar un proveedor
-    public ResponseEntity<Void> deleteProveedor(Long idProveedor){
-        if (proveedorRepository.existsById(idProveedor)){
-            proveedorRepository.deleteById(idProveedor);
+    public ResponseEntity<Void> deleteProveedor(Long id){
+        if (proveedorRepository.existsById(id)){
+            proveedorRepository.deleteById(id);
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
