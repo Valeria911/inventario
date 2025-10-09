@@ -27,23 +27,23 @@ public class InventarioController {
 
         List<EntityModel<Inventario>> inventarioResources = inventarios.stream()
                 .map(inventario -> EntityModel.of(inventario,
-                    WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(InventarioController.class).getAllInventarios()).withSelfRel()
+                    WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getAllInventarios()).withSelfRel()
                 ))
                 .collect(Collectors.toList());
-            WebMvcLinkBuilder linkTo = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(InventarioController.class).getAllInventarios());
+            WebMvcLinkBuilder linkTo = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getAllInventarios());
             return CollectionModel.of(inventarioResources, linkTo.withRel("inventarios"));
     }
 
     //ver un inventario por id
     @GetMapping("/{id}")
-    public EntityModel<Inventario> getInventarioById(@PathVariable Long idInventario){
-        Optional<Inventario> inventario = inventarioService.getInventarioById(idInventario);
+    public EntityModel<Inventario> getInventarioById(@PathVariable Long id){
+        Optional<Inventario> inventario = inventarioService.getInventarioById(id);
         if (inventario.isPresent()) {
             return EntityModel.of(inventario.get(),
-                    WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(InventarioController.class).getInventarioById(idInventario)).withSelfRel(),
-                    WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(InventarioController.class).getAllInventarios()).withRel("todos-los-inventarios"));
+                    WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getInventarioById(id)).withSelfRel(),
+                    WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getAllInventarios()).withRel("todos-los-inventarios"));
         } else {
-            throw new RuntimeException("Inventario no encontrado con id: " + idInventario);
+            throw new RuntimeException("Inventario no encontrado con id: " + id);
         }
     }
 
@@ -52,22 +52,22 @@ public class InventarioController {
     public EntityModel<Inventario> createInventario(@RequestBody Inventario inventario){
         Inventario nuevoInventario = inventarioService.createInventario(inventario);
         return EntityModel.of(nuevoInventario,
-                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(InventarioController.class).getInventarioById(nuevoInventario.getIdInventario())).withSelfRel(),
-                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(InventarioController.class).getAllInventarios()).withRel("todos-los-inventarios"));
+                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getInventarioById(nuevoInventario.getIdInventario())).withSelfRel(),
+                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getAllInventarios()).withRel("todos-los-inventarios"));
     }
 
     //editar un inventario
     @PutMapping("/{id}")
-    public EntityModel<Inventario> updateInventario(@PathVariable Long idInventario, @RequestBody Inventario inventario){
-        Inventario inventarioActualizado = inventarioService.updateInventario(idInventario, inventario);
+    public EntityModel<Inventario> updateInventario(@PathVariable Long id, @RequestBody Inventario inventario){
+        Inventario inventarioActualizado = inventarioService.updateInventario(id, inventario);
         return EntityModel.of(inventarioActualizado,
-                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(InventarioController.class).getInventarioById(inventarioActualizado.getIdInventario())).withSelfRel(),
-                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(InventarioController.class).getAllInventarios()).withRel("todos-los-inventarios"));
+                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getInventarioById(inventarioActualizado.getIdInventario())).withSelfRel(),
+                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getAllInventarios()).withRel("todos-los-inventarios"));
     }
 
     //eliminar un inventario
     @DeleteMapping("/{id}")
-    public void deleteInventario(@PathVariable Long idInventario) {
-        inventarioService.deleteInventario(idInventario);
+    public void deleteInventario(@PathVariable Long id) {
+        inventarioService.deleteInventario(id);
     }
 }

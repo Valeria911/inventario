@@ -26,47 +26,47 @@ public class MovimientoController {
 
         List<EntityModel<Movimiento>> movimientoResources = movimientos.stream()
                 .map(movimiento -> EntityModel.of(movimiento,
-                        WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MovimientoController.class).getAllMovimientos()).withSelfRel()
+                        WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getAllMovimientos()).withSelfRel()
                 ))
                 .collect(Collectors.toList());
-        WebMvcLinkBuilder linkTo = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MovimientoController.class).getAllMovimientos());
+        WebMvcLinkBuilder linkTo = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getAllMovimientos());
         return CollectionModel.of(movimientoResources, linkTo.withRel("movimientos"));
     }
 
     //ver un movimiento por id
     @GetMapping("/{id}")
-    public EntityModel<Movimiento> getMovimientoById(@PathVariable Long idMovimiento){
-        Optional<Movimiento> movimiento = movimientoService.getMovimientoById(idMovimiento);
+    public EntityModel<Movimiento> getMovimientoById(@PathVariable Long id){
+        Optional<Movimiento> movimiento = movimientoService.getMovimientoById(id);
         if (movimiento.isPresent()) {
             return EntityModel.of(movimiento.get(),
-                    WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MovimientoController.class).getMovimientoById(idMovimiento)).withSelfRel(),
-                    WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MovimientoController.class).getAllMovimientos()).withRel("todos-los-movimientos"));
+                    WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getMovimientoById(id)).withSelfRel(),
+                    WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getAllMovimientos()).withRel("todos-los-movimientos"));
         } else {
-            throw new RuntimeException("Movimiento no encontrado con id: " + idMovimiento);
+            throw new RuntimeException("Movimiento no encontrado con id: " + id);
         }
     }
 
     //crear un movimiento
     @PostMapping
-    public EntityModel<Movimiento> createMovimiento(Movimiento movimiento){
+    public EntityModel<Movimiento> createMovimiento(@RequestBody Movimiento movimiento){
         Movimiento nuevoMovimiento = movimientoService.createMovimiento(movimiento);
         return EntityModel.of(nuevoMovimiento,
-                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MovimientoController.class).getMovimientoById(nuevoMovimiento.getIdMovimiento())).withSelfRel(),
-                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MovimientoController.class).getAllMovimientos()).withRel("todos-los-movimientos"));
+                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getMovimientoById(nuevoMovimiento.getIdMovimiento())).withSelfRel(),
+                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getAllMovimientos()).withRel("todos-los-movimientos"));
     }
 
     //editar un movimiento
     @PutMapping("/{id}")
-    public EntityModel<Movimiento> updateMovimiento(@PathVariable Long idMovimiento, @RequestBody Movimiento movimiento){
-        Movimiento movimientoActualizado = movimientoService.updateMovimiento(idMovimiento, movimiento);
+    public EntityModel<Movimiento> updateMovimiento(@PathVariable Long id, @RequestBody Movimiento movimiento){
+        Movimiento movimientoActualizado = movimientoService.updateMovimiento(id, movimiento);
         return EntityModel.of(movimientoActualizado,
-                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MovimientoController.class).getMovimientoById(movimientoActualizado.getIdMovimiento())).withSelfRel(),
-                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MovimientoController.class).getAllMovimientos()).withRel("todos-los-movimientos"));
+                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getMovimientoById(movimientoActualizado.getIdMovimiento())).withSelfRel(),
+                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getAllMovimientos()).withRel("todos-los-movimientos"));
     }
 
     //eliminar un movimiento
     @DeleteMapping("/{id}")
-    public void deleteMovimiento(@PathVariable Long idMovimiento){
-        movimientoService.deleteMovimiento(idMovimiento);
+    public void deleteMovimiento(@PathVariable Long id){
+        movimientoService.deleteMovimiento(id);
     }
 }

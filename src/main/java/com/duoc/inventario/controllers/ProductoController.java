@@ -26,23 +26,23 @@ public class ProductoController {
 
         List<EntityModel<Producto>> productoResources = productos.stream()
                 .map(producto -> EntityModel.of(producto,
-                        WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ProductoController.class).getAllProductos()).withSelfRel()
+                        WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getAllProductos()).withSelfRel()
                 ))
                 .collect(Collectors.toList());
-        WebMvcLinkBuilder linkTo = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ProductoController.class).getAllProductos());
+        WebMvcLinkBuilder linkTo = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getAllProductos());
         return CollectionModel.of(productoResources, linkTo.withRel("productos"));
     }
 
     //ver un producto por id
     @GetMapping("/{id}")
-    public EntityModel<Producto> getProductoById(@PathVariable Long idProducto) {
-        Optional<Producto> producto = productoService.getProductoById(idProducto);
+    public EntityModel<Producto> getProductoById(@PathVariable Long id) {
+        Optional<Producto> producto = productoService.getProductoById(id);
         if (producto.isPresent()) {
             return EntityModel.of(producto.get(),
-                    WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ProductoController.class).getProductoById(idProducto)).withSelfRel(),
-                    WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ProductoController.class).getAllProductos()).withRel("todos-los-productos"));
+                    WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getProductoById(id)).withSelfRel(),
+                    WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getAllProductos()).withRel("todos-los-productos"));
         } else {
-            throw new RuntimeException("Producto no encontrado con id: " + idProducto);
+            throw new RuntimeException("Producto no encontrado con id: " + id);
         }
     }
 
@@ -51,23 +51,23 @@ public class ProductoController {
     public EntityModel<Producto> createProducto(@RequestBody Producto producto) {
         Producto nuevoProducto = productoService.createProducto(producto);
         return EntityModel.of(nuevoProducto,
-                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ProductoController.class).getProductoById(nuevoProducto.getIdProducto())).withSelfRel(),
-                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ProductoController.class).getAllProductos()).withRel("todos-los-productos"));
+                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getProductoById(nuevoProducto.getIdProducto())).withSelfRel(),
+                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getAllProductos()).withRel("todos-los-productos"));
     }
 
     //editar un producto
     @PutMapping("/{id}")
-    public EntityModel<Producto> updateProducto(@PathVariable Long idProducto, @RequestBody Producto producto) {
-        Producto productoActualizado = productoService.updateProducto(idProducto, producto);
+    public EntityModel<Producto> updateProducto(@PathVariable Long id, @RequestBody Producto producto) {
+        Producto productoActualizado = productoService.updateProducto(id, producto);
         return EntityModel.of(productoActualizado,
-                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ProductoController.class).getProductoById(productoActualizado.getIdProducto())).withSelfRel(),
-                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ProductoController.class).getAllProductos()).withRel("todos-los-productos"));
+                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getProductoById(productoActualizado.getIdProducto())).withSelfRel(),
+                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getAllProductos()).withRel("todos-los-productos"));
     }
 
     //eliminar un producto
     @DeleteMapping("/{id}")
-    public void deleteProducto(@PathVariable Long idProducto) {
-        productoService.deleteProducto(idProducto);
+    public void deleteProducto(@PathVariable Long id) {
+        productoService.deleteProducto(id);
     }
 
 }

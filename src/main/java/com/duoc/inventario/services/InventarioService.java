@@ -21,8 +21,8 @@ public class InventarioService {
     }
 
     //ver un inventario por id
-    public Optional<Inventario> getInventarioById(Long idInventario) {
-        return inventarioRepository.findById(idInventario);
+    public Optional<Inventario> getInventarioById(Long id) {
+        return inventarioRepository.findById(id);
     }
 
     //crear un inventario
@@ -31,8 +31,8 @@ public class InventarioService {
     }
 
     //editar un inventario
-    public Inventario updateInventario(Long idInventario, Inventario inventarioDetails) {
-        return inventarioRepository.findById(idInventario).map(inventario -> {
+    public Inventario updateInventario(Long id, Inventario inventarioDetails) {
+        return inventarioRepository.findById(id).map(inventario -> {
             inventario.setIdProducto(inventarioDetails.getIdProducto());
             inventario.setCantidad(inventarioDetails.getCantidad());
             inventario.setUbicacion(inventarioDetails.getUbicacion());
@@ -42,9 +42,9 @@ public class InventarioService {
     }
 
     //eliminar un inventario
-    public ResponseEntity<Void> deleteInventario(Long idInventario) {
-        if (inventarioRepository.existsById(idInventario)) {
-            inventarioRepository.deleteById(idInventario);
+    public ResponseEntity<Void> deleteInventario(Long id) {
+        if (inventarioRepository.existsById(id)) {
+            inventarioRepository.deleteById(id);
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
