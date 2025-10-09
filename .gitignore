@@ -32,3 +32,4 @@ build/
 ### VS Code ###
 .vscode/
 /Wallet_AR20EXT947101BPD
+.DS_Store
