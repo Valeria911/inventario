@@ -35,4 +35,23 @@ public class MovimientoRepositoryTest {
         assertNotNull(resultado.getIdMovimiento());
         assertEquals(1L, resultado.getIdProducto());
     }
+
+    @Test
+    public void eliminarMovimientoTest(){
+        //Arrange
+        Movimiento movimiento = new Movimiento();
+        movimiento.setIdProducto(1L);
+        movimiento.setFechaMovimiento("2023-10-10");
+        movimiento.setCantidad(10);
+        movimiento.setTipo("INGRESO");
+        movimiento.setIdUsuario(1L);
+        Movimiento movimientoGuardado = movimientoRepository.save(movimiento);
+
+        //Act
+        movimientoRepository.deleteById(movimientoGuardado.getIdMovimiento());
+        Movimiento resultado = movimientoRepository.findById(movimientoGuardado.getIdMovimiento()).orElse(null);
+
+        //Assert
+        assertEquals(null, resultado);
+    }
 }

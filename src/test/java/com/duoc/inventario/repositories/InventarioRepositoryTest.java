@@ -32,4 +32,22 @@ public class InventarioRepositoryTest {
         assertNotNull(resultado.getIdInventario());
         assertEquals(1L, resultado.getIdProducto());
     }
+
+    @Test
+    public void buscarInventarioPorIdTest(){
+        //Arrange
+        Inventario guardar = new Inventario();
+        guardar.setFechaActualizacion("2023-10-10");
+        guardar.setIdProducto(1L);
+        guardar.setCantidad(100);
+        guardar.setUbicacion("Bodega Central");
+        Inventario inventarioGuardado = inventarioRepository.save(guardar);
+
+        //Act
+        Inventario resultado = inventarioRepository.findById(inventarioGuardado.getIdInventario()).orElse(null);
+
+        //Assert
+        assertNotNull(resultado);
+        assertEquals(inventarioGuardado.getIdInventario(), resultado.getIdInventario());
+    }
 }
